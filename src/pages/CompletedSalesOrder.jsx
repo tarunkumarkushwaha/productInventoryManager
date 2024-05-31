@@ -1,11 +1,15 @@
 import React from 'react'
 import { Box, Button, Flex, Grid, GridItem } from '@chakra-ui/react';
 import ViewEditModal from '../components/ViewEditModal';
+import { useContext } from 'react';
+import { Context } from "../myContext";
 
 const CompletedSalesOrder = () => {
+  const { signIn } = useContext(Context);
+ 
   return (
     <>
-      <Box bg='gray.100' flex='1' d='flex' flexDirection='column' alignItems='center' justifyContent='center' m={10} textAlign='center'>
+      {signIn ? <Box bg='gray.100' flex='1' d='flex' flexDirection='column' alignItems='center' justifyContent='center' m={10} textAlign='center'>
         <Grid templateRows='repeat(auto-fill, minmax(50px, 1fr))'>
           <Grid templateColumns='repeat(5, 1fr)' border='1px solid black' fontWeight={"bold"}>
             <GridItem bg='red.300' p={4} border='1px solid black'>ID</GridItem>
@@ -22,7 +26,7 @@ const CompletedSalesOrder = () => {
             <GridItem bg='purple.100' p={4} border='1px solid black'><ViewEditModal /></GridItem>
           </Grid>
         </Grid>
-      </Box>
+      </Box> : <Box>user not signed in</Box>}
     </>
   )
 }

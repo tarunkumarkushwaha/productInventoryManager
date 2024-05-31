@@ -34,13 +34,13 @@ const SaleOrderModal = () => {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <FormControl>
-                            <FormLabel>First name</FormLabel>
-                            <Input ref={initialRef} placeholder='First name' />
+                            <FormLabel>item name</FormLabel>
+                            <Input ref={initialRef} placeholder='item name' />
                         </FormControl>
 
                         <FormControl mt={4}>
-                            <FormLabel>Last name</FormLabel>
-                            <Input placeholder='Last name' />
+                            <FormLabel>amount</FormLabel>
+                            <Input placeholder='amout eg 100$' />
                         </FormControl>
                     </ModalBody>
 
