@@ -17,21 +17,22 @@ import {
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Usercontext from './userContext';
+import Footer from './components/Footer';
 
 const queryClient = new QueryClient()
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <><App /></>,
+    element: <><Navbar /><App /><Footer/></>,
   },
   {
     path: "/activesalesorder",
-    element: <><Navbar /><ActiveSalesOrder /></>,
+    element: <><Navbar /><ActiveSalesOrder /><Footer/></>,
   },
   {
     path: "/completedsalesorder",
-    element: <><Navbar /><CompletedSalesOrder /></>,
+    element: <><Navbar /><CompletedSalesOrder /><Footer/></>,
   },
   {
     path: "/login",

@@ -5,11 +5,13 @@ import { useContext } from 'react';
 import { Context } from "../myContext";
 
 const CompletedSalesOrder = () => {
-  const { signIn } = useContext(Context);
- 
+  const { signIn, dark } = useContext(Context);
+
   return (
     <>
-      {signIn ? <Box bg='gray.100' flex='1' d='flex' flexDirection='column' alignItems='center' justifyContent='center' m={10} textAlign='center'>
+      {signIn ? 
+      <Flex justify={"space-between"} minHeight={"100vh"} flexWrap={"wrap"} align='center' padding={"10px"} gap={3} bg={dark ? "gray.600" : 'gray.300'}>
+      <Box flex='1' d='flex' flexDirection='column' alignItems='center' justifyContent='center' m={10} textAlign='center'>
         <Grid templateRows='repeat(auto-fill, minmax(50px, 1fr))'>
           <Grid templateColumns='repeat(5, 1fr)' border='1px solid black' fontWeight={"bold"}>
             <GridItem bg='red.300' p={4} border='1px solid black'>ID</GridItem>
@@ -26,7 +28,8 @@ const CompletedSalesOrder = () => {
             <GridItem bg='purple.100' p={4} border='1px solid black'><ViewEditModal /></GridItem>
           </Grid>
         </Grid>
-      </Box> : <Box>user not signed in</Box>}
+      </Box>
+      </Flex> : <Box>user not signed in</Box>}
     </>
   )
 }

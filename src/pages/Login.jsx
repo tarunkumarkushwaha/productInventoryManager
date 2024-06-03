@@ -12,17 +12,15 @@ import {
   FormLabel,
   Input,
   Button,
-  Text,
-  useColorMode
+  Text
 } from '@chakra-ui/react';
 
 const Login = () => {
   const [userName, setuserName] = useState("")
   const [password, setpassword] = useState("")
-  const { name, pwd, setsignIn, signIn } = useContext(Context);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { name, pwd, setsignIn, signIn,dark } = useContext(Context);
 
-  console.log(name,pwd,signIn)
+  // console.log(name,pwd,signIn)
 
   let navigate = useNavigate()
   const toast = useToast()
@@ -64,11 +62,11 @@ const Login = () => {
 
   return (
     <>
-      <Box bgImage="url('/path-to-your-image.jpg')" bgRepeat="no-repeat" bgPosition="left" h="100vh">
+      <Box  bgPosition="left" h="100vh">
         <Flex bg="rgba(15, 23, 42, 0.6)" h="100vh" justifyContent="center" alignItems="center">
           <VStack spacing={8} px={6} py={8} mx="auto" w="full" maxW="md">
-            <Box bg={colorMode === 'dark' ? 'gray.800' : 'white'} rounded="lg" shadow="md" p={8} w="full">
-              <Heading as="h1" size="xl" textAlign="center" mb={6} color={colorMode === 'dark' ? 'white' : 'gray.900'}>
+            <Box bg={dark  ? 'gray.800' : 'white'} rounded="lg" shadow="md" p={8} w="full">
+              <Heading as="h1" size="xl" textAlign="center" mb={6} color={dark  ? 'white' : 'gray.900'}>
                 Sign in to your account
               </Heading>
               <VStack spacing={4}>
@@ -80,9 +78,9 @@ const Login = () => {
                     type="email"
                     name="email"
                     placeholder="name@company.com"
-                    bg={colorMode === 'dark' ? 'gray.700' : 'green.100'}
-                    borderColor={colorMode === 'dark' ? 'gray.600' : 'gray.300'}
-                    focusBorderColor={colorMode === 'dark' ? 'blue.500' : 'primary.600'}
+                    bg={ 'green.100'}
+                    borderColor={dark  ? 'gray.600' : 'gray.300'}
+                    focusBorderColor={dark  ? 'blue.500' : 'primary.600'}
                   />
                 </FormControl>
                 <FormControl id="password">
@@ -93,9 +91,9 @@ const Login = () => {
                     type="password"
                     name="password"
                     placeholder="••••••••"
-                    bg={colorMode === 'dark' ? 'gray.700' : 'green.100'}
-                    borderColor={colorMode === 'dark' ? 'gray.600' : 'gray.300'}
-                    focusBorderColor={colorMode === 'dark' ? 'blue.500' : 'primary.600'}
+                    bg={'green.100'}
+                    borderColor={dark  ? 'gray.600' : 'gray.300'}
+                    focusBorderColor={dark  ? 'blue.500' : 'primary.600'}
                   />
                 </FormControl>
                 <Button
@@ -110,8 +108,8 @@ const Login = () => {
                 >
                   Sign in
                 </Button>
-                <Text fontSize="sm" color={colorMode === 'dark' ? 'gray.400' : 'gray.500'}>
-                  Don’t have an account yet? <Link to="/signup" style={{ color: colorMode === 'dark' ? '#4FD1C5' : '#3182CE' }}>Sign up</Link>
+                <Text fontSize="sm" color={dark  ? 'gray.400' : 'gray.500'}>
+                  Don’t have an account yet? <Link to="/signup" style={{ color: dark  ? '#4FD1C5' : '#3182CE' }}>Sign up</Link>
                 </Text>
               </VStack>
             </Box>

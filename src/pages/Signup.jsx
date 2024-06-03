@@ -14,8 +14,7 @@ import {
   Input,
   Button,
   Checkbox,
-  Text,
-  useColorMode,
+  Text
 } from '@chakra-ui/react';
 
 const Signup = () => {
@@ -23,8 +22,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
-  const { colorMode } = useColorMode();
-  const { setName, setPwd } = useContext(Context);
+  const { setName, setPwd,dark } = useContext(Context);
 
   const toast = useToast()
 
@@ -111,11 +109,11 @@ const Signup = () => {
 
   return (
     <>
-      <Box minH="100vh">
+      <Box minH="100vh" >
         <Flex bg="rgba(15, 23, 42, 0.6)" minH="100vh" justifyContent="center" alignItems="center">
           <VStack spacing={8} px={6} py={8} mx="auto" w="full" maxW="md">
-            <Box bg={colorMode === 'dark' ? 'gray.800' : 'white'} rounded="lg" shadow="md" p={8} w="full">
-              <Heading as="h1" size="xl" textAlign="center" mb={6} color={colorMode === 'dark' ? 'white' : 'gray.900'}>
+            <Box rounded="lg" shadow="md" p={8} w="full">
+              <Heading as="h1" size="xl" textAlign="center" mb={6} color={dark ? 'white' : 'gray.900'}>
                 Create an account
               </Heading>
               <VStack spacing={4}>
@@ -127,9 +125,9 @@ const Signup = () => {
                     type="email"
                     name="email"
                     placeholder="name@anymail.com"
-                    bg={colorMode === 'dark' ? 'gray.700' : 'gray.50'}
-                    borderColor={colorMode === 'dark' ? 'gray.600' : 'gray.300'}
-                    focusBorderColor={colorMode === 'dark' ? 'blue.500' : 'primary.600'}
+                    bg={'gray.50'}
+                    borderColor={dark ? 'gray.600' : 'gray.300'}
+                    focusBorderColor={dark ? 'blue.500' : 'primary.600'}
                   />
                 </FormControl>
                 <FormControl id="password">
@@ -140,9 +138,9 @@ const Signup = () => {
                     type={showPass ? "text" : "password"}
                     name="password"
                     placeholder="••••••••"
-                    bg={colorMode === 'dark' ? 'gray.700' : 'gray.50'}
-                    borderColor={colorMode === 'dark' ? 'gray.600' : 'gray.300'}
-                    focusBorderColor={colorMode === 'dark' ? 'blue.500' : 'primary.600'}
+                    bg={'gray.50'}
+                    borderColor={dark ? 'gray.600' : 'gray.300'}
+                    focusBorderColor={dark ? 'blue.500' : 'primary.600'}
                   />
                 </FormControl>
                 <FormControl id="confirm-password">
@@ -153,9 +151,9 @@ const Signup = () => {
                     type={showPass ? "text" : "password"}
                     name="confirm-password"
                     placeholder="••••••••"
-                    bg={colorMode === 'dark' ? 'gray.700' : 'gray.50'}
-                    borderColor={colorMode === 'dark' ? 'gray.600' : 'gray.300'}
-                    focusBorderColor={colorMode === 'dark' ? 'blue.500' : 'primary.600'}
+                    bg={'gray.50'}
+                    borderColor={dark ? 'gray.600' : 'gray.300'}
+                    focusBorderColor={dark ? 'blue.500' : 'primary.600'}
                   />
                 </FormControl>
                 <HStack spacing={2}>
@@ -164,7 +162,7 @@ const Signup = () => {
                     onChange={(e) => setShowPass(e.target.checked)}
                     colorScheme="teal"
                   />
-                  <Text color={colorMode === 'dark' ? 'white' : 'gray.900'}>View password</Text>
+                  <Text color={dark ? 'white' : 'gray.900'}>View password</Text>
                 </HStack>
                 <Button
                   onClick={handleSignup}
@@ -178,8 +176,8 @@ const Signup = () => {
                 >
                   Create an account
                 </Button>
-                <Text fontSize="sm" color={colorMode === 'dark' ? 'gray.400' : 'gray.500'}>
-                  Already have an account? <Link to="/login" style={{ color: colorMode === 'dark' ? '#4FD1C5' : '#3182CE' }}>Login here</Link>
+                <Text fontSize="sm" color={dark ? 'gray.400' : 'gray.500'}>
+                  Already have an account? <Link to="/login" style={{ color: dark ? '#4FD1C5' : '#3182CE' }}>Login here</Link>
                 </Text>
               </VStack>
             </Box>
