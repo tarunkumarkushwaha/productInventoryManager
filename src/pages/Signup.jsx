@@ -112,7 +112,7 @@ const Signup = () => {
       <Box minH="100vh" >
         <Flex bg="rgba(15, 23, 42, 0.6)" minH="100vh" justifyContent="center" alignItems="center">
           <VStack spacing={8} px={6} py={8} mx="auto" w="full" maxW="md">
-            <Box rounded="lg" shadow="md" p={8} w="full">
+            <Box bg={'white'} rounded="lg" shadow="md" p={8} w="full">
               <Heading as="h1" size="xl" textAlign="center" mb={6} color={dark ? 'white' : 'gray.900'}>
                 Create an account
               </Heading>

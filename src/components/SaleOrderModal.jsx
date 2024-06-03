@@ -1,38 +1,88 @@
 import React from 'react'
 import { useRef, useState } from 'react'
-import { useForm } from 'react-hook-form';
 import {
     Modal,
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
     useDisclosure,
     Button,
     FormControl,
     FormLabel,
-    Input, Box, FormErrorMessage ,Select
+    Input, Box, Select,
+    useToast
 } from '@chakra-ui/react'
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createData, Products } from '../../api';
+import { useContext } from 'react';
+import { Context } from "../myContext";
 
 const SaleOrderModal = () => {
+    const [item, setitem] = useState([])
+    const [quantity, setQuantity] = useState('');
+    const [productName, setproductName] = useState('');
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = useRef(null)
     const finalRef = useRef(null)
+    const toast = useToast()
 
-    const products = [
-        { id: 1, name: 'Product A' },
-        { id: 2, name: 'Product B' },
-        { id: 3, name: 'Product C' },
-        { id: 4, name: 'Product D' },
-      ];
+    const { name, setformData } = useContext(Context);
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const products = Products.products
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn: createData,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['events']);
+        },
+    });
+
+    const additem = () => {
+        const filteredObjects = products.filter(obj => productName.includes(obj.name));
+        // console.log(filteredObjects)
+        setitem(prev => [...prev, filteredObjects])
+        setproductName("")
+        setQuantity("")
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (item.length < 1) {
+            toast({
+                title: 'error',
+                description: `no items in cart`,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            })
+            return
+        }
+        const salesOrderPayload = {
+            "customer_id": name,
+            "items": item.map(item => item),
+            "totalprice": item.reduce((total, product) => total + product[0].selling_price, 0),
+            "paid": false,
+            "invoice_no": "Invoice - 1212121",
+            "invoice_date": new Date()
+        }
+        // console.log(salesOrderPayload)
+        mutation.mutate(salesOrderPayload);
+        setformData(prev => [...prev,salesOrderPayload])
+        setproductName("")
+        setQuantity("")
+        setitem([])
+        onClose();
     };
+
+    const handleInputChange = (e) => {
+        setproductName(e.target.value);
+    };
+
     return (
         <>
             <Button colorScheme='white' color={"black"} bg={'white'} variant='outline' onClick={onOpen}>+ Sale order</Button>
@@ -48,67 +98,42 @@ const SaleOrderModal = () => {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <FormControl isInvalid={errors.productName} mb={4}>
+                            <Box p={4} fontSize={"larger"} fontWeight={500}>Items added - {item.map(item => item[0].name + ",")}</Box>
+                            <form onSubmit={handleSubmit}>
+                                <FormControl mb={4}>
                                     <FormLabel>Product Name</FormLabel>
                                     <Select
                                         id="productName"
                                         placeholder="Select product"
-                                        {...register('productName', { required: 'Product name is required' })}
+                                        value={productName}
+                                        onChange={handleInputChange}
                                     >
                                         {products.map((product) => (
-                                            <option key={product.id} value={product.name}>{product.name}</option>
+                                            <option key={product.id} value={product.name}>
+                                                {/* {product.name} */}
+                                                {`${product.name} price -- ${product.selling_price} rupees`}
+                                            </option>
                                         ))}
                                     </Select>
-                                    <FormErrorMessage>{errors.productName && errors.productName.message}</FormErrorMessage>
+
                                 </FormControl>
 
-                                <FormControl isInvalid={errors.price} mb={4}>
-                                    <FormLabel>Price</FormLabel>
-                                    <Input
-                                        id="price"
-                                        placeholder="Price"
-                                        type="number"
-                                        {...register('price', {
-                                            required: 'Price is required',
-                                            min: { value: 0, message: 'Price must be at least 0' },
-                                        })}
-                                    />
-                                    <FormErrorMessage>{errors.price && errors.price.message}</FormErrorMessage>
-                                </FormControl>
-
-                                <FormControl isInvalid={errors.amountInUnit} mb={4}>
-                                    <FormLabel>Amount in Unit</FormLabel>
-                                    <Input
-                                        id="amountInUnit"
-                                        placeholder="Amount in Unit"
-                                        {...register('amountInUnit', { required: 'Amount in unit is required' })}
-                                    />
-                                    <FormErrorMessage>{errors.amountInUnit && errors.amountInUnit.message}</FormErrorMessage>
-                                </FormControl>
-
-                                <FormControl isInvalid={errors.quantity} mb={4}>
+                                <FormControl mb={4}>
                                     <FormLabel>Quantity</FormLabel>
                                     <Input
                                         id="quantity"
                                         placeholder="Quantity"
                                         type="number"
-                                        {...register('quantity', {
-                                            required: 'Quantity is required',
-                                            min: { value: 1, message: 'Quantity must be at least 1' },
-                                        })}
+                                        value={quantity}
+                                        onChange={(e) => setQuantity(e.target.value)}
                                     />
-                                    <FormErrorMessage>{errors.quantity && errors.quantity.message}</FormErrorMessage>
                                 </FormControl>
 
-                                <Button mt={4} colorScheme="teal" type="submit">Submit</Button>
+                                <Button m={4} onClick={additem} colorScheme="teal">Add item</Button>
+                                <Button m={4} colorScheme="teal" type="submit">Submit</Button>
                             </form>
                         </Box>
                     </ModalBody>
-
-                    <ModalFooter>
-                        <Button onClick={onClose}>Cancel</Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>

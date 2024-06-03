@@ -65,7 +65,7 @@ const Login = () => {
       <Box  bgPosition="left" h="100vh">
         <Flex bg="rgba(15, 23, 42, 0.6)" h="100vh" justifyContent="center" alignItems="center">
           <VStack spacing={8} px={6} py={8} mx="auto" w="full" maxW="md">
-            <Box bg={dark  ? 'gray.800' : 'white'} rounded="lg" shadow="md" p={8} w="full">
+            <Box bg={'white'} rounded="lg" shadow="md" p={8} w="full">
               <Heading as="h1" size="xl" textAlign="center" mb={6} color={dark  ? 'white' : 'gray.900'}>
                 Sign in to your account
               </Heading>

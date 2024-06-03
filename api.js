@@ -1,6 +1,65 @@
-const events = [
-  { id: 1, name: 'cart item 1' },
-  { id: 2, name: 'cart item 1' }
+export let newOrders = [
+  {
+    "customer_id": 11908,
+    "items": [
+      {
+          "id": 246,
+          "selling_price": 23,
+          "max_retail_price": 21,
+          "amount": 22,
+          "unit": "kg",
+          "quantity_in_inventory": 1,
+          "name": "egg"
+      }
+      ,{
+        "id": 246,
+        "selling_price": 23,
+        "max_retail_price": 21,
+        "amount": 22,
+        "unit": "kg",
+        "quantity_in_inventory": 1,
+        "name": "pulse"
+    }
+  ],
+    "totalprice": 1000,
+    "paid": false,
+    "invoice_no": "Invoice - 1212121",
+    "invoice_date": new Date()
+  }
+];
+
+const DATA = localStorage.getItem('data');
+if (DATA) {
+  newOrders = JSON.parse(DATA);
+}
+
+// console.log(newOrders, "new orders")
+
+export const completedOrders = [
+  {
+    "customer_id": 11908,
+    "items": "item 1",
+    "totalprice": 1000,
+    "paid": true,
+    "invoice_no": "Invoice - 1212121",
+    "invoice_date": new Date()
+  },
+  {
+    "customer_id": 11908,
+    "items": "item 2",
+    "totalprice": 1000,
+    "paid": true,
+    "invoice_no": "Invoice - 1212121",
+    "invoice_date": new Date()
+  },
+  {
+    "customer_id": 11908,
+    "items": "item 3",
+    "totalprice": 1000,
+    "paid": true,
+    "invoice_no": "Invoice - 1212121",
+    "invoice_date": new Date()
+  },
 ];
 
 const customerData = {
@@ -23,16 +82,12 @@ const customerData = {
   },
 }
 
-const Product = {
+export const Products = {
   "id": 209,
   "display_id": 8,
   "owner": 1079,
-  "name": "New Product",
-  "category": "The god of War",
-  "characteristics": "New Product Characteristics",
-  "features": "",
   "brand": "New Product Brand",
-  "sku": [
+  "products": [
     {
       "id": 248,
       "selling_price": 54,
@@ -40,7 +95,7 @@ const Product = {
       "amount": 33,
       "unit": "kg",
       "quantity_in_inventory": 0,
-      "product": 209
+      "name": "wheat"
     },
     {
       "id": 247,
@@ -49,7 +104,7 @@ const Product = {
       "amount": 33,
       "unit": "kg",
       "quantity_in_inventory": 0,
-      "product": 209
+      "name": "rice"
     },
     {
       "id": 246,
@@ -58,41 +113,37 @@ const Product = {
       "amount": 22,
       "unit": "kg",
       "quantity_in_inventory": 1,
-      "product": 209
+      "name": "pulse"
+    },
+    {
+      "id": 245,
+      "selling_price": 23,
+      "max_retail_price": 21,
+      "amount": 22,
+      "unit": "kg",
+      "quantity_in_inventory": 1,
+      "name": "paddy"
     }
   ],
   "updated_on": "2024-05-24T12:46:41.995873Z",
   "adding_date": "2024-05-24T12:46:41.995828Z"
 }
 
-const salesOrderPayload = {
-  "customer_id": 11908,
-  "items": [
-    {
-      "sku_id": 220,
-      "price": 12,
-      "quantity": 12
-    }],
-  "paid": false,
-  "invoice_no": "Invoice - 1212121",
-  "invoice_date": "7/5/2024"
-}
-
-
-
 export const fetchData = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(events);
+      resolve({ completedOrders: completedOrders, newOrders: newOrders });
     }, 500);
   });
 };
 
-// export const createData = async (newEvent) => {
-//   return new Promise((resolve) => {
-//     setTimeout(() => {
-//       events.push(newEvent);
-//       resolve(newEvent);
-//     }, 500);
-//   });
-// };
+export const createData = async (newEvent) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      newOrders.push(newEvent);
+      resolve(newEvent);
+      localStorage.setItem("data", JSON.stringify(newOrders));
+      // console.log(newOrders)
+    }, 500);
+  });
+};
