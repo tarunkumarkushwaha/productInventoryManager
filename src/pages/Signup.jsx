@@ -72,15 +72,21 @@ const Signup = () => {
         title: 'Error',
         description: "name must be of 3 characters",
         status: 'error',
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       })
       return
     }
 
-    if (passwordValidator(password).error) {
+    if (passwordValidator(password)?.error) {
       let messege = passwordValidator(password).errormessege
-      toast.error(messege)
+      toast({
+        title: 'error',
+        description: messege,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      })
       return
     }
     if (checkPassword == password) {
@@ -90,7 +96,7 @@ const Signup = () => {
         title: 'Success',
         description: "acount created",
         status: 'success',
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       })
       localStorage.setItem('Name', JSON.stringify(naam));
@@ -101,7 +107,7 @@ const Signup = () => {
         title: 'Error',
         description: "password don't match",
         status: 'error',
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       })
     }
