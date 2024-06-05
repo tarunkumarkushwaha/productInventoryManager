@@ -89,13 +89,19 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
     };
 
     const OrderedItems = ({ item }) => {
-        // console.log(item)
+        const deleteitem = () =>{
+            // let olditem = curre
+            // let newarray = [...olditem.slice(0, items.indexOf(item)), ...olditem.slice(items.indexOf(item) + 1)];
+            // // console.log(olditem,newarray)
+            // setitems(newarray)
+        }
+        // console.log(item,items.indexOf(item))
         return (
             <>
                 <Flex bg={"purple.100"} margin={1} borderRadius={"25px"} flexDirection={"row"} justify={"center"} alignItems={"center"}>
                     <Text p={1} margin={3} color={"black"} fontSize={"smaller"} fontWeight={500}>{item.name}</Text>
                     <Text color={"black"} fontSize={"smaller"} fontWeight={500}>{`${item.amount} ${item.unit}`}</Text>
-                    <Button bg={"purple.100"} height={"15px"} m={3} color={"red"} onClick={() => console.log(item.name, "deleted")}>X</Button>
+                    <Button bg={"purple.100"} height={"15px"} m={3} color={"red"} onClick={deleteitem}>X</Button>
                 </Flex>
             </>
         )
