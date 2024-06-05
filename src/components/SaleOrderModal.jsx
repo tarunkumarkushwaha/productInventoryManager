@@ -12,7 +12,7 @@ import {
     FormControl,
     FormLabel,
     Input, Box, Select,
-    useToast
+    useToast, Text, Flex
 } from '@chakra-ui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createData, Products } from '../../api';
@@ -21,17 +21,14 @@ import { Context } from "../myContext";
 
 const SaleOrderModal = () => {
     const [item, setitem] = useState([])
-    const [quantity, setQuantity] = useState('');
+    const [quantity, setQuantity] = useState(1);
     const [productName, setproductName] = useState('');
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = useRef(null)
     const finalRef = useRef(null)
     const toast = useToast()
-
     const { name, setformData } = useContext(Context);
-
     const products = Products.products
-
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
@@ -43,13 +40,13 @@ const SaleOrderModal = () => {
 
     const additem = () => {
         const filteredObjects = products.filter(obj => productName.includes(obj.name));
-        // console.log(filteredObjects)
+        filteredObjects[0].amount = quantity
+        filteredObjects[0].total_price = quantity * filteredObjects[0].selling_price
+        console.log(filteredObjects[0])
         setitem(prev => [...prev, ...filteredObjects])
         setproductName("")
-        setQuantity("")
+        setQuantity(1)
     }
-
-    // console.log(item)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -68,7 +65,7 @@ const SaleOrderModal = () => {
         const salesOrderPayload = {
             "customer_id": name,
             "items": item.map(item => item),
-            "totalprice": item.reduce((total, product) => total + product.selling_price, 0),
+            "totalprice": item.reduce((total, product) => total + product.total_price, 0),
             "paid": false,
             "invoice_no": "Invoice - 1212121",
             "invoice_date": new Date()
@@ -86,7 +83,17 @@ const SaleOrderModal = () => {
         setproductName(e.target.value);
     };
 
-    // console.log(item)
+    const OrderedItems = ({ item }) => {
+        return (
+            <>
+                <Flex bg={"purple.100"} margin={1} borderRadius={"25px"} flexDirection={"row"} justify={"center"} alignItems={"center"}>
+                    <Text p={1} margin={3} color={"black"} fontSize={"smaller"} fontWeight={500}>{item.name}</Text>
+                    <Text color={"black"} fontSize={"smaller"} fontWeight={500}>{`${item.amount} ${item.unit}`}</Text>
+                    <Button bg={"purple.100"} height={"15px"} m={3} color={"red"} onClick={() => console.log(item.name, "deleted")}>X</Button>
+                </Flex>
+            </>
+        )
+    }
 
     return (
         <>
@@ -103,7 +110,9 @@ const SaleOrderModal = () => {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
-                            <Box p={4} fontSize={"larger"} fontWeight={500}>Items added - {item.map(item => item.name + ",")}</Box>
+                            <Flex flexWrap={"wrap"} justify={"center"} alignItems={"center"} >
+                            {item.map((item, i) => <OrderedItems key={i} item={item} />)}
+                            </Flex>
                             <form onSubmit={handleSubmit}>
                                 <FormControl mb={4}>
                                     <FormLabel>Product Name</FormLabel>
@@ -115,7 +124,6 @@ const SaleOrderModal = () => {
                                     >
                                         {products.map((product) => (
                                             <option key={product.id} value={product.name}>
-                                                {/* {product.name} */}
                                                 {`${product.name} price -- ${product.selling_price} rupees`}
                                             </option>
                                         ))}
@@ -124,15 +132,17 @@ const SaleOrderModal = () => {
                                 </FormControl>
 
                                 <FormControl mb={4}>
-                                    <FormLabel>Quantity</FormLabel>
+                                    <FormLabel>Quantity in kg</FormLabel>
                                     <Input
                                         id="quantity"
-                                        placeholder="Quantity"
+                                        placeholder={`Quantity in Kg`}
                                         type="number"
                                         value={quantity}
                                         onChange={(e) => setQuantity(e.target.value)}
                                     />
                                 </FormControl>
+
+                                <Text fontWeight={"medium"}>Total Rs.{item.reduce((total, product) => total + product.total_price, 0)}</Text>
 
                                 <Button m={4} onClick={additem} colorScheme="teal">Add item</Button>
                                 <Button m={4} colorScheme="teal" type="submit">Submit</Button>

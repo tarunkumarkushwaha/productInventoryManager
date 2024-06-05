@@ -21,7 +21,7 @@ import { createData, Products } from '../../api';
 import { useContext } from 'react';
 import { Context } from "../myContext";
 
-const ViewEditModal = ({formData, setformData, currentData}) => {
+const ViewEditModal = ({ formData, setformData, currentData }) => {
     const [item, setitem] = useState([])
     const [quantity, setQuantity] = useState('');
     const [productName, setproductName] = useState('');
@@ -30,7 +30,7 @@ const ViewEditModal = ({formData, setformData, currentData}) => {
     const finalRef = useRef(null)
     const toast = useToast()
 
-    const { name} = useContext(Context);
+    const { name } = useContext(Context);
 
     const products = Products.products
 
@@ -88,14 +88,15 @@ const ViewEditModal = ({formData, setformData, currentData}) => {
         setproductName(e.target.value);
     };
 
-    const OrderedItems = ({item})=>{
+    const OrderedItems = ({ item }) => {
         // console.log(item)
         return (
             <>
-            <Box bg={"grey"} display={"flex"} flexDirection={"row"} justify={"center"} alignItems={"center"}>
-               <Text p={1} m={3} color={"black"} fontSize={"larger"} fontWeight={500}>{item.name}</Text>
-               <Button p={1} m={3} color={"red"} bg={"white"} onClick={()=>console.log(item.name,"deleted")}>X</Button>
-            </Box>
+                <Flex bg={"purple.100"} margin={1} borderRadius={"25px"} flexDirection={"row"} justify={"center"} alignItems={"center"}>
+                    <Text p={1} margin={3} color={"black"} fontSize={"smaller"} fontWeight={500}>{item.name}</Text>
+                    <Text color={"black"} fontSize={"smaller"} fontWeight={500}>{`${item.amount} ${item.unit}`}</Text>
+                    <Button bg={"purple.100"} height={"15px"} m={3} color={"red"} onClick={() => console.log(item.name, "deleted")}>X</Button>
+                </Flex>
             </>
         )
     }
@@ -114,9 +115,10 @@ const ViewEditModal = ({formData, setformData, currentData}) => {
                     <ModalHeader>place your order</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
-                    <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
-                       
-                               {currentData.items.map((item,i)=><OrderedItems key={i} item={item}/>)}
+                        <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
+                        <Flex flexWrap={"wrap"} justify={"center"} alignItems={"center"} >
+                            {currentData.items.map((item, i) => <OrderedItems key={i} item={item} />)}
+                            </Flex>
                             {/* <Box p={4} fontSize={"larger"} fontWeight={500}>date - {currentData.invoice_date}</Box>                           */}
                             {/* <form onSubmit={handleSubmit}>
                                 <FormControl mb={4}>
@@ -154,7 +156,7 @@ const ViewEditModal = ({formData, setformData, currentData}) => {
                         </Box>
                     </ModalBody>
 
-                 
+
                 </ModalContent>
             </Modal>
         </>

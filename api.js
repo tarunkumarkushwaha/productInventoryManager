@@ -91,8 +91,8 @@ export const Products = {
     {
       "id": 248,
       "selling_price": 54,
-      "max_retail_price": 44,
-      "amount": 33,
+      "total_price": 0,
+      "amount": 0,
       "unit": "kg",
       "quantity_in_inventory": 0,
       "name": "wheat"
@@ -100,8 +100,8 @@ export const Products = {
     {
       "id": 247,
       "selling_price": 32,
-      "max_retail_price": 32,
-      "amount": 33,
+      "total_price": 0,
+      "amount": 0,
       "unit": "kg",
       "quantity_in_inventory": 0,
       "name": "rice"
@@ -109,8 +109,8 @@ export const Products = {
     {
       "id": 246,
       "selling_price": 23,
-      "max_retail_price": 21,
-      "amount": 22,
+      "total_price": 0,
+      "amount": 0,
       "unit": "kg",
       "quantity_in_inventory": 1,
       "name": "pulse"
@@ -118,8 +118,8 @@ export const Products = {
     {
       "id": 245,
       "selling_price": 23,
-      "max_retail_price": 21,
-      "amount": 22,
+      "total_price": 0,
+      "amount": 0,
       "unit": "kg",
       "quantity_in_inventory": 1,
       "name": "paddy"
