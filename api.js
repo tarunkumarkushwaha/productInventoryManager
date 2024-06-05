@@ -3,15 +3,15 @@ export let newOrders = [
     "customer_id": 11908,
     "items": [
       {
-          "id": 246,
-          "selling_price": 23,
-          "max_retail_price": 21,
-          "amount": 22,
-          "unit": "kg",
-          "quantity_in_inventory": 1,
-          "name": "egg"
+        "id": 246,
+        "selling_price": 23,
+        "max_retail_price": 21,
+        "amount": 22,
+        "unit": "kg",
+        "quantity_in_inventory": 1,
+        "name": "egg"
       }
-      ,{
+      , {
         "id": 246,
         "selling_price": 23,
         "max_retail_price": 21,
@@ -19,8 +19,8 @@ export let newOrders = [
         "unit": "kg",
         "quantity_in_inventory": 1,
         "name": "pulse"
-    }
-  ],
+      }
+    ],
     "totalprice": 1000,
     "paid": false,
     "invoice_no": "Invoice - 1212121",

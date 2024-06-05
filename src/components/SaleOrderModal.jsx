@@ -44,10 +44,12 @@ const SaleOrderModal = () => {
     const additem = () => {
         const filteredObjects = products.filter(obj => productName.includes(obj.name));
         // console.log(filteredObjects)
-        setitem(prev => [...prev, filteredObjects])
+        setitem(prev => [...prev, ...filteredObjects])
         setproductName("")
         setQuantity("")
     }
+
+    // console.log(item)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -62,17 +64,18 @@ const SaleOrderModal = () => {
             })
             return
         }
+
         const salesOrderPayload = {
             "customer_id": name,
             "items": item.map(item => item),
-            "totalprice": item.reduce((total, product) => total + product[0].selling_price, 0),
+            "totalprice": item.reduce((total, product) => total + product.selling_price, 0),
             "paid": false,
             "invoice_no": "Invoice - 1212121",
             "invoice_date": new Date()
         }
         // console.log(salesOrderPayload)
         mutation.mutate(salesOrderPayload);
-        setformData(prev => [...prev,salesOrderPayload])
+        setformData(prev => [...prev, salesOrderPayload])
         setproductName("")
         setQuantity("")
         setitem([])
@@ -82,6 +85,8 @@ const SaleOrderModal = () => {
     const handleInputChange = (e) => {
         setproductName(e.target.value);
     };
+
+    // console.log(item)
 
     return (
         <>
@@ -98,7 +103,7 @@ const SaleOrderModal = () => {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
-                            <Box p={4} fontSize={"larger"} fontWeight={500}>Items added - {item.map(item => item[0].name + ",")}</Box>
+                            <Box p={4} fontSize={"larger"} fontWeight={500}>Items added - {item.map(item => item.name + ",")}</Box>
                             <form onSubmit={handleSubmit}>
                                 <FormControl mb={4}>
                                     <FormLabel>Product Name</FormLabel>

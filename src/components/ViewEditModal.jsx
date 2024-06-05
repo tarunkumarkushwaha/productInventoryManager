@@ -12,7 +12,9 @@ import {
     FormControl,
     FormLabel,
     Input, Box, Select,
-    useToast
+    useToast,
+    Text,
+    Flex
 } from '@chakra-ui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createData, Products } from '../../api';
@@ -32,7 +34,8 @@ const ViewEditModal = ({formData, setformData, currentData}) => {
 
     const products = Products.products
 
-    console.log(formData)
+    // console.log(currentData)
+    // console.log(formData)
 
     const queryClient = useQueryClient();
 
@@ -85,6 +88,18 @@ const ViewEditModal = ({formData, setformData, currentData}) => {
         setproductName(e.target.value);
     };
 
+    const OrderedItems = ({item})=>{
+        // console.log(item)
+        return (
+            <>
+            <Box bg={"grey"} display={"flex"} flexDirection={"row"} justify={"center"} alignItems={"center"}>
+               <Text p={1} m={3} color={"black"} fontSize={"larger"} fontWeight={500}>{item.name}</Text>
+               <Button p={1} m={3} color={"red"} bg={"white"} onClick={()=>console.log(item.name,"deleted")}>X</Button>
+            </Box>
+            </>
+        )
+    }
+
     return (
         <>
             <Box cursor={"pointer"} fontWeight={"700"} onClick={onOpen}>...</Box>
@@ -100,7 +115,8 @@ const ViewEditModal = ({formData, setformData, currentData}) => {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                     <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
-                            <Box p={4} fontSize={"larger"} fontWeight={500}>Items ordered - {currentData.items.map(item=>item.name)}</Box>
+                       
+                               {currentData.items.map((item,i)=><OrderedItems key={i} item={item}/>)}
                             {/* <Box p={4} fontSize={"larger"} fontWeight={500}>date - {currentData.invoice_date}</Box>                           */}
                             {/* <form onSubmit={handleSubmit}>
                                 <FormControl mb={4}>
