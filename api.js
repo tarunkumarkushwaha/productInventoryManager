@@ -147,3 +147,15 @@ export const createData = async (newEvent) => {
     }, 500);
   });
 };
+
+export const patchData = async (newEvent) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      let newarray = [...newOrders.slice(0, newOrders.indexOf(newEvent)), ...newOrders.slice(newOrders.indexOf(newEvent) + 1)];
+      newOrders.push(newEvent);
+      resolve("item has been modified");
+      localStorage.setItem("data", JSON.stringify(newOrders));
+      // console.log(newOrders)
+    }, 500);
+  });
+};

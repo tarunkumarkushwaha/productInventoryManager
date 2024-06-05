@@ -2,6 +2,10 @@ import { Context } from './myContext';
 import React from 'react'
 import { useEffect, useState } from "react";
 import { newOrders } from '../api';
+import { useQuery } from '@tanstack/react-query';
+import { fetchData } from '../api';
+
+
 
 const Usercontext = ({ children }) => {
     const [signIn, setsignIn] = useState(false)
@@ -15,12 +19,25 @@ const Usercontext = ({ children }) => {
         setdark(prevtheme => !prevtheme)
     }
 
+    const { data: events } = useQuery({
+        queryKey: ['newOrders'],
+        queryFn: fetchData,
+    });
+
+
     useEffect(() => {
+        if (events) {
+            setformData(events.newOrders);
+        }
+    }, [events]);
+
+    useEffect(() => {
+
+
         const item1 = localStorage.getItem('Name');
         const item2 = localStorage.getItem('Password');
         const item3 = localStorage.getItem('login');
         const THEME = localStorage.getItem('Theme');
-        const DATA = localStorage.getItem('data');
         if (item1) {
             setName(JSON.parse(item1));
         }
@@ -33,15 +50,12 @@ const Usercontext = ({ children }) => {
         if (THEME) {
             setdark(JSON.parse(THEME));
         }
-        if (DATA) {
-            setformData(JSON.parse(DATA));
-        }
     }, []);
     return (
         <Context.Provider value={{
             name, setName, pwd,
             setPwd, signIn, setsignIn
-            , themeChange, dark, formData,setformData
+            , themeChange, dark, formData, setformData
         }}>
             {children}
 

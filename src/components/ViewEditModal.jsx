@@ -17,30 +17,24 @@ import {
     Flex
 } from '@chakra-ui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createData, Products } from '../../api';
+import { createData, Products, patchData } from '../../api';
 import { useContext } from 'react';
 import { Context } from "../myContext";
 
 const ViewEditModal = ({ formData, setformData, currentData }) => {
-    const [item, setitem] = useState([])
-    const [quantity, setQuantity] = useState('');
+    const [items, setitems] = useState(currentData.items)
+    const [quantity, setQuantity] = useState(1);
     const [productName, setproductName] = useState('');
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = useRef(null)
     const finalRef = useRef(null)
     const toast = useToast()
-
     const { name } = useContext(Context);
-
     const products = Products.products
-
-    // console.log(currentData)
-    // console.log(formData)
-
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: createData,
+        mutationFn: patchData,
         onSuccess: () => {
             queryClient.invalidateQueries(['events']);
         },
@@ -48,16 +42,28 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
 
     const additem = () => {
         const filteredObjects = products.filter(obj => productName.includes(obj.name));
+        if (filteredObjects.length < 1) {
+            toast({
+                title: 'error',
+                description: `no items selected`,
+                status: 'error',
+                duration: 2000,
+                isClosable: true,
+            })
+            return
+        }
+        filteredObjects[0].amount = quantity
+        filteredObjects[0].total_price = quantity * filteredObjects[0].selling_price
         // console.log(filteredObjects)
-        setitem(prev => [...prev, filteredObjects])
+        setitems(prev => [...prev, ...filteredObjects])
         setproductName("")
-        setQuantity("")
+        setQuantity(1)
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (item.length < 1) {
+        if (items.length < 1) {
             toast({
                 title: 'error',
                 description: `no items in cart`,
@@ -67,20 +73,21 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
             })
             return
         }
+
         const salesOrderPayload = {
             "customer_id": name,
-            "items": item.map(item => item),
-            "totalprice": item.reduce((total, product) => total + product[0].selling_price, 0),
+            "items": items.map(item => item),
+            "totalprice": items.reduce((total, product) => total + product.total_price, 0),
             "paid": false,
             "invoice_no": "Invoice - 1212121",
             "invoice_date": new Date()
         }
-        // console.log(salesOrderPayload)
-        mutation.mutate(salesOrderPayload);
-        setformData(salesOrderPayload)
+
+        // setformData([...modorder, salesOrderPayload])
+        console.log(salesOrderPayload)
         setproductName("")
         setQuantity("")
-        setitem([])
+        setitems([])
         onClose();
     };
 
@@ -89,11 +96,11 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
     };
 
     const OrderedItems = ({ item }) => {
-        const deleteitem = () =>{
-            // let olditem = curre
-            // let newarray = [...olditem.slice(0, items.indexOf(item)), ...olditem.slice(items.indexOf(item) + 1)];
-            // // console.log(olditem,newarray)
-            // setitems(newarray)
+        const deleteitem = () => {
+            let olditem = items
+            let newarray = [...olditem.slice(0, items.indexOf(item)), ...olditem.slice(items.indexOf(item) + 1)];
+            // console.log(olditem,newarray)
+            setitems(newarray)
         }
         // console.log(item,items.indexOf(item))
         return (
@@ -122,11 +129,11 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
-                        <Flex flexWrap={"wrap"} justify={"center"} alignItems={"center"} >
-                            {currentData.items.map((item, i) => <OrderedItems key={i} item={item} />)}
+                            <Flex flexWrap={"wrap"} justify={"center"} alignItems={"center"} >
+                                {items.map((item, i) => <OrderedItems key={i} item={item} />)}
                             </Flex>
                             {/* <Box p={4} fontSize={"larger"} fontWeight={500}>date - {currentData.invoice_date}</Box>                           */}
-                            {/* <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit}>
                                 <FormControl mb={4}>
                                     <FormLabel>Product Name</FormLabel>
                                     <Select
@@ -137,7 +144,7 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
                                     >
                                         {products.map((product) => (
                                             <option key={product.id} value={product.name}>
-                                             
+
                                                 {`${product.name} price -- ${product.selling_price} rupees`}
                                             </option>
                                         ))}
@@ -158,7 +165,7 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
 
                                 <Button m={4} onClick={additem} colorScheme="teal">Add item</Button>
                                 <Button m={4} colorScheme="teal" type="submit">Submit</Button>
-                            </form> */}
+                            </form>
                         </Box>
                     </ModalBody>
 
