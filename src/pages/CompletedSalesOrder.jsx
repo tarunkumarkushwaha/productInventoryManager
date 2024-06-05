@@ -8,6 +8,8 @@ import { completedOrders } from '../../api';
 const CompletedSalesOrder = () => {
   const { signIn, dark } = useContext(Context);
 
+  // console.log(completedOrders)
+
   return (
     <>
       {signIn ? 
@@ -21,13 +23,13 @@ const CompletedSalesOrder = () => {
             <GridItem bg='yellow.300' p={4} border='1px solid black'>Last modified</GridItem>
             <GridItem bg='purple.300' p={4} border='1px solid black'>Edit/View</GridItem>
           </Grid>
-          {completedOrders.map((item,i)=><Grid key={i} templateColumns='repeat(5, 1fr)' border='1px solid black'>
+          {completedOrders.map((item,i)=>(<Grid key={i} templateColumns='repeat(5, 1fr)' border='1px solid black'>
             <GridItem bg='red.100' p={4} border='1px solid black'>{i+1}</GridItem>
             <GridItem bg='green.100' p={4} border='1px solid black'>{item.customer_id}</GridItem>
             <GridItem bg='blue.100' p={4} border='1px solid black'>{item.totalprice}</GridItem>
             <GridItem bg='yellow.100' p={4} border='1px solid black'>{`${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}`}</GridItem>
-            <GridItem bg='purple.100' p={4} border='1px solid black'><ViewEditModal /></GridItem>
-          </Grid>)}
+            <GridItem bg='purple.100' p={4} border='1px solid black'>...</GridItem>
+          </Grid>))}
         </Grid>
       </Box>
       </Flex> : <Box>user not signed in</Box>}
