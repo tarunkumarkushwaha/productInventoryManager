@@ -143,7 +143,6 @@ export const createData = async (newEvent) => {
       newOrders.push(newEvent);
       resolve(newEvent);
       localStorage.setItem("data", JSON.stringify(newOrders));
-      // console.log(newOrders)
     }, 500);
   });
 };
@@ -151,11 +150,25 @@ export const createData = async (newEvent) => {
 export const patchData = async (newEvent) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      let newarray = [...newOrders.slice(0, newOrders.indexOf(newEvent)), ...newOrders.slice(newOrders.indexOf(newEvent) + 1)];
-      newOrders.push(newEvent);
+      let currentorder = newEvent.currentData
+      let modItems = newEvent.items
+      currentorder.items = modItems
+      let newarray = [...newOrders.slice(0, newOrders.indexOf(newEvent.currentData)),currentorder ,...newOrders.slice(newOrders.indexOf(newEvent.currentData) + 1)];
+      newOrders = newarray
       resolve("item has been modified");
       localStorage.setItem("data", JSON.stringify(newOrders));
-      // console.log(newOrders)
+    }, 500);
+  });
+};
+
+export const deleteData = async (newEvent) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      let newarray = [...newOrders.slice(0, newOrders.indexOf(newEvent)), ...newOrders.slice(newOrders.indexOf(newEvent) + 1)];
+      newOrders = newarray
+      resolve("item has been deleted");
+      localStorage.setItem("data", JSON.stringify(newOrders));
+      // console.log(newarray,newOrders)
     }, 500);
   });
 };

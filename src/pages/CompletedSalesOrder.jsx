@@ -3,12 +3,13 @@ import { Box, Button, Flex, Grid, GridItem, Text } from '@chakra-ui/react';
 import ViewEditModal from '../components/ViewEditModal';
 import { useContext } from 'react';
 import { Context } from "../myContext";
-import { completedOrders } from '../../api';
 import { Spinner } from '@chakra-ui/react'
 
 const CompletedSalesOrder = () => {
-  const { signIn, dark } = useContext(Context);
+  const { signIn, dark ,completedorderData} = useContext(Context);
   const [notsigned, setnotsigned] = useState(false)
+
+  // console.log(completedorderData)
 
   useEffect(() => {
     if (!signIn) {
@@ -32,7 +33,7 @@ const CompletedSalesOrder = () => {
             <GridItem bg='yellow.300' p={4} border='1px solid black'>Last modified</GridItem>
             <GridItem bg='purple.300' p={4} border='1px solid black'>Edit/View</GridItem>
           </Grid>
-          {completedOrders.map((item,i)=>(<Grid key={i} templateColumns='repeat(5, 1fr)' border='1px solid black'>
+          {completedorderData && completedorderData.map((item,i)=>(<Grid key={i} templateColumns='repeat(5, 1fr)' border='1px solid black'>
             <GridItem bg='red.100' p={4} border='1px solid black'>{i+1}</GridItem>
             <GridItem bg='green.100' p={4} border='1px solid black'>{item.customer_id}</GridItem>
             <GridItem bg='blue.100' p={4} border='1px solid black'>{item.totalprice}</GridItem>

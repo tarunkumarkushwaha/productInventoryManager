@@ -12,7 +12,8 @@ const Usercontext = ({ children }) => {
     const [name, setName] = useState("");
     const [pwd, setPwd] = useState("");
     const [dark, setdark] = useState(false)
-    const [formData, setformData] = useState([newOrders[0]])
+    const [formData, setformData] = useState()
+    const [completedorderData, setcompletedorderData] = useState()
 
     const themeChange = () => {
         dark ? localStorage.setItem('Theme', JSON.stringify(false)) : localStorage.setItem('Theme', JSON.stringify(true));
@@ -20,7 +21,7 @@ const Usercontext = ({ children }) => {
     }
 
     const { data: events } = useQuery({
-        queryKey: ['newOrders'],
+        queryKey: ['orders'],
         queryFn: fetchData,
     });
 
@@ -28,6 +29,7 @@ const Usercontext = ({ children }) => {
     useEffect(() => {
         if (events) {
             setformData(events.newOrders);
+            setcompletedorderData(events.completedOrders)
         }
     }, [events]);
 
@@ -54,7 +56,7 @@ const Usercontext = ({ children }) => {
     return (
         <Context.Provider value={{
             name, setName, pwd,
-            setPwd, signIn, setsignIn
+            setPwd, signIn, setsignIn, completedorderData
             , themeChange, dark, formData, setformData
         }}>
             {children}

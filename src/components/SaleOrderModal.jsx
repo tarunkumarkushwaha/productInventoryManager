@@ -84,7 +84,7 @@ const SaleOrderModal = () => {
         mutation.mutate(salesOrderPayload);
         setformData(prev => [...prev, salesOrderPayload])
         setproductName("")
-        setQuantity("")
+        setQuantity(1)
         setitems([])
         onClose();
         toast({

@@ -17,12 +17,12 @@ import {
     Flex
 } from '@chakra-ui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createData, Products, patchData } from '../../api';
+import { createData, Products, patchData, deleteData } from '../../api';
 import { useContext } from 'react';
 import { Context } from "../myContext";
 
 const ViewEditModal = ({ formData, setformData, currentData }) => {
-    const [items, setitems] = useState(currentData.items)
+    const [items, setitems] = useState(currentData && currentData.items)
     const [quantity, setQuantity] = useState(1);
     const [productName, setproductName] = useState('');
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -33,8 +33,17 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
     const products = Products.products
     const queryClient = useQueryClient();
 
+    console.log(typeof currentData.invoice_date)
+
     const mutation = useMutation({
         mutationFn: patchData,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['events']);
+        },
+    });
+
+    const deletemutation = useMutation({
+        mutationFn: deleteData,
         onSuccess: () => {
             queryClient.invalidateQueries(['events']);
         },
@@ -66,33 +75,31 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
         if (items.length < 1) {
             toast({
                 title: 'error',
-                description: `no items in cart`,
+                description: `no items in cart do you want to delete order`,
                 status: 'error',
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
             })
             return
         }
+        let payload = { currentData: currentData, items: items }
+        mutation.mutate(payload)
+        onClose();
+    };
 
-        const salesOrderPayload = {
-            "customer_id": name,
-            "items": items.map(item => item),
-            "totalprice": items.reduce((total, product) => total + product.total_price, 0),
-            "paid": false,
-            "invoice_no": "Invoice - 1212121",
-            "invoice_date": new Date()
-        }
-
-        // setformData([...modorder, salesOrderPayload])
-        console.log(salesOrderPayload)
+    const cancelOrder = () => {
+        deletemutation.mutate(currentData)
         setproductName("")
         setQuantity("")
         setitems([])
         onClose();
-    };
-
-    const cancelOrder = (e) => {
-        console.log("cancel cancel")
+        toast({
+            title: 'success',
+            description: `order deleted`,
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        })
     };
 
     const handleInputChange = (e) => {
@@ -103,10 +110,8 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
         const deleteitem = () => {
             let olditem = items
             let newarray = [...olditem.slice(0, items.indexOf(item)), ...olditem.slice(items.indexOf(item) + 1)];
-            // console.log(olditem,newarray)
             setitems(newarray)
         }
-        // console.log(item,items.indexOf(item))
         return (
             <>
                 <Flex bg={"purple.100"} margin={1} borderRadius={"25px"} flexDirection={"row"} justify={"center"} alignItems={"center"}>
@@ -132,11 +137,10 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
                     <ModalHeader fontFamily={"cursive"} >place your order</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
-                        <Box fontFamily={"cursive"}  maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
+                        <Box fontFamily={"cursive"} maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
                             <Flex flexWrap={"wrap"} justify={"center"} alignItems={"center"} >
                                 {items.map((item, i) => <OrderedItems key={i} item={item} />)}
                             </Flex>
-                            {/* <Box p={4} fontSize={"larger"} fontWeight={500}>date - {currentData.invoice_date}</Box>                           */}
                             <form onSubmit={handleSubmit}>
                                 <FormControl mb={4}>
                                     <FormLabel>Product Name</FormLabel>
@@ -166,6 +170,8 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
                                         onChange={(e) => setQuantity(e.target.value)}
                                     />
                                 </FormControl>
+                                <Box p={2} fontSize={"smaller"} fontWeight={500}>Date - {currentData.invoice_date}</Box>                          
+                            
                                 <Button m={2} onClick={cancelOrder} colorScheme="teal">Cancel order</Button>
                                 <Button m={2} onClick={additem} colorScheme="teal">Add item</Button>
                                 <Button m={2} colorScheme="teal" type="submit">Submit</Button>

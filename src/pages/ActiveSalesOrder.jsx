@@ -23,7 +23,7 @@ const ActiveSalesOrder = ({ }) => {
         <Box fontFamily={"cursive"}  minHeight={"100vh"} padding={10} bg={dark ? "gray.600" : 'gray.300'}>
           <Text fontWeight={"medium"} fontSize={"large"} textAlign={"center"} padding={5}>Active Orders</Text>
           <Box bg={dark ? "gray.600" : 'gray.300'} flex='1' d='flex' flexDirection='column' alignItems='center' justifyContent='center' m={10} textAlign='center'>
-            <Grid templateRows='repeat(auto-fill, minmax(50px, 1fr))'>
+            <Grid templateRows='repeat(auto-fill, minmax(50px, 1fr))' >
               <Grid templateColumns='repeat(5, 1fr)' border='1px solid black' fontWeight={"bold"}>
                 <GridItem bg='red.300' p={4} border='1px solid black'>ID</GridItem>
                 <GridItem bg='green.300' p={4} border='1px solid black'>Customer Name</GridItem>
@@ -33,7 +33,7 @@ const ActiveSalesOrder = ({ }) => {
               </Grid>
               {formData && formData.map((item, i) => <Grid key={i} templateColumns='repeat(5, 1fr)' border='1px solid black'>
                 <GridItem bg='red.100' p={4} border='1px solid black'>{i + 1}</GridItem>
-                <GridItem bg='green.100' p={4} border='1px solid black'>{item.customer_id}</GridItem>
+                <GridItem overflow={"hidden"} bg='green.100' p={4} border='1px solid black'>{item.customer_id}</GridItem>
                 <GridItem bg='blue.100' p={4} border='1px solid black'>{item.totalprice}</GridItem>
                 <GridItem bg='yellow.100' p={4} border='1px solid black'>{`${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}`}</GridItem>
                 <GridItem bg='purple.100' p={4} border='1px solid black'>
