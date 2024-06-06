@@ -1,19 +1,28 @@
-import React from 'react'
-import { Box, Button, Flex, Grid, GridItem } from '@chakra-ui/react';
+import React, { useState ,useEffect } from 'react'
+import { Box, Button, Flex, Grid, GridItem, Text } from '@chakra-ui/react';
 import ViewEditModal from '../components/ViewEditModal';
 import { useContext } from 'react';
 import { Context } from "../myContext";
 import { completedOrders } from '../../api';
+import { Spinner } from '@chakra-ui/react'
 
 const CompletedSalesOrder = () => {
   const { signIn, dark } = useContext(Context);
+  const [notsigned, setnotsigned] = useState(false)
 
-  // console.log(completedOrders)
+  useEffect(() => {
+    if (!signIn) {
+      setTimeout(() => {
+        setnotsigned(true)
+      }, 2000); 
+    }
+  }, [signIn]);
 
   return (
     <>
       {signIn ? 
-      <Flex justify={"space-between"} minHeight={"100vh"} flexWrap={"wrap"} align='center' padding={"10px"} gap={3} bg={dark ? "gray.600" : 'gray.300'}>
+      <Box minHeight={"100vh"} fontFamily={"cursive"}  padding={10} bg={dark ? "gray.600" : 'gray.300'}>
+      <Text fontWeight={"medium"} fontSize={"large"} textAlign={"center"} padding={5}>Completed Orders</Text>
       <Box flex='1' d='flex' flexDirection='column' alignItems='center' justifyContent='center' m={10} textAlign='center'>
         <Grid templateRows='repeat(auto-fill, minmax(50px, 1fr))'>
           <Grid templateColumns='repeat(5, 1fr)' border='1px solid black' fontWeight={"bold"}>
@@ -32,7 +41,7 @@ const CompletedSalesOrder = () => {
           </Grid>))}
         </Grid>
       </Box>
-      </Flex> : <Box>user not signed in</Box>}
+      </Box> : <Flex justifyContent={"center"} alignItems={"center"} minHeight={"100vh"} padding={10} bg={dark ? "gray.600" : 'gray.300'}>{notsigned?<Text p={10} textAlign={"center"}>User not signed in</Text> :<Spinner color='blue.800' size={"xl"} />}</Flex>}
     </>
   )
 }

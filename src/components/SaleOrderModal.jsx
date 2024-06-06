@@ -87,6 +87,13 @@ const SaleOrderModal = () => {
         setQuantity("")
         setitems([])
         onClose();
+        toast({
+            title: 'success',
+            description: `order placed`,
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+        })
     };
 
     const handleInputChange = (e) => {
@@ -114,7 +121,7 @@ const SaleOrderModal = () => {
 
     return (
         <>
-            <Button colorScheme='white' color={"black"} bg={'white'} variant='outline' onClick={onOpen}>+ Sale order</Button>
+            <Button fontFamily={"cursive"}  colorScheme='white' color={"black"} bg={'white'} variant='outline' onClick={onOpen}>+ Sale order</Button>
             <Modal
                 initialFocusRef={initialRef}
                 finalFocusRef={finalRef}
@@ -123,10 +130,10 @@ const SaleOrderModal = () => {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>place your order</ModalHeader>
+                    <ModalHeader fontFamily={"cursive"} >place your order</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
-                        <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
+                        <Box fontFamily={"cursive"}  maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
                             <Flex flexWrap={"wrap"} justify={"center"} alignItems={"center"} >
                             {items.map((item, i) => <OrderedItems key={i} item={item} />)}
                             </Flex>

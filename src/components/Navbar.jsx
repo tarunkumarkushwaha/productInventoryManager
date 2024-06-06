@@ -4,23 +4,26 @@ import { Box, Button, Flex, Grid, GridItem, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { Context } from "../myContext";
+import { useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const navigate = useNavigate()
   const { signIn, setsignIn, dark, themeChange } = useContext(Context);
   const toast = useToast()
+  const location = useLocation()
+  // console.log(location.pathname)
 
   return (
     <>
-      <Box bg={dark ? "gray.900" : 'gray.400'} color={dark ? "gray.100" : 'gray.900'} padding={"15px"} textAlign={"center"} fontWeight="bold" fontSize="xl">
+      <Box fontFamily={"monospace"}  onClick={()=>navigate("/")} cursor={"pointer"} bg={dark ? "gray.900" : 'gray.400'} color={dark ? "gray.100" : 'gray.900'} padding={"15px"} textAlign={"center"} fontWeight="bold" fontSize="xl">
         Product inventory manager
       </Box>
-      <Flex justify='center' flexWrap={"wrap"} align='center' padding={"15px"} gap={3} color={dark ? "gray.100" : 'gray.900'} bg={dark ? "gray.900" : 'gray.400'}>
+      <Flex fontFamily={"cursive"}  justify='center' flexWrap={"wrap"} align='center' padding={"15px"} gap={3} color={dark ? "gray.100" : 'gray.900'} bg={dark ? "gray.900" : 'gray.400'}>
         {signIn ? <>
-          <Button colorScheme='white' bg={'white'} color={"black"} variant='outline' onClick={() => navigate("/activesalesorder")}>
+          <Button colorScheme='white' bg={location.pathname == "/activesalesorder" ? "blue.300" : 'white'} color={"black"} variant='outline' onClick={() => navigate("/activesalesorder")}>
             Active Sales Order
           </Button>
-          <Button colorScheme='white' bg={'white'} color={"black"} variant='outline' onClick={() => navigate("/completedsalesorder")}>
+          <Button colorScheme='white' bg={location.pathname == "/completedsalesorder" ? "blue.300" : 'white'} color={"black"} variant='outline' onClick={() => navigate("/completedsalesorder")}>
             Completed Sales Order
           </Button>
           <SaleOrderModal />

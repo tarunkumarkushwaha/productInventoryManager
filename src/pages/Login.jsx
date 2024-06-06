@@ -62,7 +62,7 @@ const Login = () => {
 
   return (
     <>
-      <Box  bgPosition="left" h="100vh">
+      <Box  bgPosition="left" fontFamily={"cursive"} h="100vh">
         <Flex bg="rgba(15, 23, 42, 0.6)" h="100vh" justifyContent="center" alignItems="center">
           <VStack spacing={8} px={6} py={8} mx="auto" w="full" maxW="md">
             <Box bg={'white'} rounded="lg" shadow="md" p={8} w="full">

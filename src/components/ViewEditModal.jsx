@@ -91,6 +91,10 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
         onClose();
     };
 
+    const cancelOrder = (e) => {
+        console.log("cancel cancel")
+    };
+
     const handleInputChange = (e) => {
         setproductName(e.target.value);
     };
@@ -125,10 +129,10 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>place your order</ModalHeader>
+                    <ModalHeader fontFamily={"cursive"} >place your order</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
-                        <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
+                        <Box fontFamily={"cursive"}  maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
                             <Flex flexWrap={"wrap"} justify={"center"} alignItems={"center"} >
                                 {items.map((item, i) => <OrderedItems key={i} item={item} />)}
                             </Flex>
@@ -162,9 +166,9 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
                                         onChange={(e) => setQuantity(e.target.value)}
                                     />
                                 </FormControl>
-
-                                <Button m={4} onClick={additem} colorScheme="teal">Add item</Button>
-                                <Button m={4} colorScheme="teal" type="submit">Submit</Button>
+                                <Button m={2} onClick={cancelOrder} colorScheme="teal">Cancel order</Button>
+                                <Button m={2} onClick={additem} colorScheme="teal">Add item</Button>
+                                <Button m={2} colorScheme="teal" type="submit">Submit</Button>
                             </form>
                         </Box>
                     </ModalBody>

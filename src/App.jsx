@@ -10,7 +10,7 @@ function App() {
     <>
       <Flex justify={"center"} minHeight={"100vh"} flexWrap={"wrap"} align='center' padding={"10px"} gap={3} bg={dark ? "gray.600" : 'gray.300'}>
 
-        <Text color={dark ? "gray.100" : 'gray.900'} fontSize='2xl'>
+        <Text fontFamily={"cursive"} fontWeight={"medium"} color={dark ? "gray.100" : 'gray.900'} fontSize='2xl'>
           Seamless Inventory management on the go
         </Text>
       </Flex>
