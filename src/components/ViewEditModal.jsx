@@ -170,7 +170,7 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
                                         onChange={(e) => setQuantity(e.target.value)}
                                     />
                                 </FormControl>
-                                <Box p={2} fontSize={"smaller"} fontWeight={500}>Date - {currentData.invoice_date}</Box>                          
+                                {/* <Box p={2} fontSize={"smaller"} fontWeight={500}>Date - {currentData.invoice_date}</Box>                           */}
                             
                                 <Button m={2} onClick={cancelOrder} colorScheme="teal">Cancel order</Button>
                                 <Button m={2} onClick={additem} colorScheme="teal">Add item</Button>
