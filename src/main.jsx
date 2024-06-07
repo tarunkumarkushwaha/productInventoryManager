@@ -18,6 +18,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Usercontext from './userContext';
 import Footer from './components/Footer';
+import ErrorPage from './pages/ErrorPage';
 
 const queryClient = new QueryClient()
 
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <><Signup/></>,
+  },
+  {
+    path: "*",
+    element: <><Navbar /><ErrorPage/><Footer/></>,
   },
 ]);
 const rootElement = document.getElementById('root')
