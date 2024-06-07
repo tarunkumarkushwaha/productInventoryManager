@@ -14,8 +14,6 @@ import {
     Input, Box, Select,
     useToast, Text, Flex
 } from '@chakra-ui/react'
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createData, Products } from '../../api';
 import { useContext } from 'react';
 import { Context } from "../myContext";
 
@@ -27,20 +25,12 @@ const SaleOrderModal = () => {
     const initialRef = useRef(null)
     const finalRef = useRef(null)
     const toast = useToast()
-    const { name, setformData } = useContext(Context);
-    const products = Products.products
-    const queryClient = useQueryClient();
-
-    const mutation = useMutation({
-        mutationFn: createData,
-        onSuccess: () => {
-            queryClient.invalidateQueries(['events']);
-        },
-    });
+    const { name, setformData, Products, createdata } = useContext(Context);
+    const products = Products
 
     const additem = () => {
         const filteredObjects = products.filter(obj => productName.includes(obj.name));
-        if(filteredObjects.length<1){
+        if (filteredObjects.length < 1) {
             toast({
                 title: 'error',
                 description: `no items selected`,
@@ -66,7 +56,7 @@ const SaleOrderModal = () => {
                 title: 'error',
                 description: `no items in cart`,
                 status: 'error',
-                duration: 5000,
+                duration: 2000,
                 isClosable: true,
             })
             return
@@ -81,7 +71,7 @@ const SaleOrderModal = () => {
             "invoice_date": new Date()
         }
         // console.log(salesOrderPayload)
-        mutation.mutate(salesOrderPayload);
+        createdata.mutate(salesOrderPayload);
         setformData(prev => [...prev, salesOrderPayload])
         setproductName("")
         setQuantity(1)
@@ -91,7 +81,7 @@ const SaleOrderModal = () => {
             title: 'success',
             description: `order placed`,
             status: 'success',
-            duration: 5000,
+            duration: 2000,
             isClosable: true,
         })
     };
@@ -101,13 +91,12 @@ const SaleOrderModal = () => {
     };
 
     const OrderedItems = ({ item }) => {
-        const deleteitem = () =>{
+        const deleteitem = () => {
             let olditem = items
             let newarray = [...olditem.slice(0, items.indexOf(item)), ...olditem.slice(items.indexOf(item) + 1)];
             // console.log(olditem,newarray)
             setitems(newarray)
         }
-        // console.log(item,items.indexOf(item))
         return (
             <>
                 <Flex bg={"purple.100"} margin={1} borderRadius={"25px"} flexDirection={"row"} justify={"center"} alignItems={"center"}>
@@ -121,7 +110,7 @@ const SaleOrderModal = () => {
 
     return (
         <>
-            <Button fontFamily={"cursive"}  colorScheme='white' color={"black"} bg={'white'} variant='outline' onClick={onOpen}>+ Sale order</Button>
+            <Button fontFamily={"cursive"} colorScheme='white' color={"black"} bg={'white'} variant='outline' onClick={onOpen}>+ Sale order</Button>
             <Modal
                 initialFocusRef={initialRef}
                 finalFocusRef={finalRef}
@@ -133,9 +122,9 @@ const SaleOrderModal = () => {
                     <ModalHeader fontFamily={"cursive"} >place your order</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
-                        <Box fontFamily={"cursive"}  maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
+                        <Box fontFamily={"cursive"} maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="md">
                             <Flex flexWrap={"wrap"} justify={"center"} alignItems={"center"} >
-                            {items.map((item, i) => <OrderedItems key={i} item={item} />)}
+                                {items.map((item, i) => <OrderedItems key={i} item={item} />)}
                             </Flex>
                             <form onSubmit={handleSubmit}>
                                 <FormControl mb={4}>
@@ -146,7 +135,7 @@ const SaleOrderModal = () => {
                                         value={productName}
                                         onChange={handleInputChange}
                                     >
-                                        {products.map((product) => (
+                                        {products && products.map((product) => (
                                             <option key={product.id} value={product.name}>
                                                 {`${product.name} price -- ${product.selling_price} rupees`}
                                             </option>

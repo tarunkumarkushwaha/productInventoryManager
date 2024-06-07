@@ -16,12 +16,10 @@ import {
     Text,
     Flex
 } from '@chakra-ui/react'
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createData, Products, patchData, deleteData } from '../../api';
 import { useContext } from 'react';
 import { Context } from "../myContext";
 
-const ViewEditModal = ({ formData, setformData, currentData }) => {
+const ViewEditModal = ({ currentData }) => {
     const [items, setitems] = useState(currentData && currentData.items)
     const [quantity, setQuantity] = useState(1);
     const [productName, setproductName] = useState('');
@@ -29,25 +27,9 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
     const initialRef = useRef(null)
     const finalRef = useRef(null)
     const toast = useToast()
-    const { name } = useContext(Context);
-    const products = Products.products
-    const queryClient = useQueryClient();
 
-    console.log(typeof currentData.invoice_date)
-
-    const mutation = useMutation({
-        mutationFn: patchData,
-        onSuccess: () => {
-            queryClient.invalidateQueries(['events']);
-        },
-    });
-
-    const deletemutation = useMutation({
-        mutationFn: deleteData,
-        onSuccess: () => {
-            queryClient.invalidateQueries(['events']);
-        },
-    });
+    const { Products, patchdata, deletedata } = useContext(Context);
+    const products = Products
 
     const additem = () => {
         const filteredObjects = products.filter(obj => productName.includes(obj.name));
@@ -77,18 +59,25 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
                 title: 'error',
                 description: `no items in cart do you want to delete order`,
                 status: 'error',
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
             return
         }
         let payload = { currentData: currentData, items: items }
-        mutation.mutate(payload)
+        patchdata.mutate(payload)
         onClose();
+        toast({
+            title: 'success',
+            description: `order modified`,
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+        })
     };
 
     const cancelOrder = () => {
-        deletemutation.mutate(currentData)
+        deletedata.mutate(currentData)
         setproductName("")
         setQuantity("")
         setitems([])
@@ -97,7 +86,7 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
             title: 'success',
             description: `order deleted`,
             status: 'success',
-            duration: 3000,
+            duration: 2000,
             isClosable: true,
         })
     };
@@ -150,7 +139,7 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
                                         value={productName}
                                         onChange={handleInputChange}
                                     >
-                                        {products.map((product) => (
+                                        {products && products.map((product) => (
                                             <option key={product.id} value={product.name}>
 
                                                 {`${product.name} price -- ${product.selling_price} rupees`}
@@ -171,9 +160,9 @@ const ViewEditModal = ({ formData, setformData, currentData }) => {
                                     />
                                 </FormControl>
                                 {/* <Box p={2} fontSize={"smaller"} fontWeight={500}>Date - {currentData.invoice_date}</Box>                           */}
-                            
-                                <Button m={2} onClick={cancelOrder} colorScheme="teal">Cancel order</Button>
+                                <Text fontWeight={"medium"}>Total Rs.{items.reduce((total, product) => total + product.total_price, 0)}</Text>
                                 <Button m={2} onClick={additem} colorScheme="teal">Add item</Button>
+                                <Button m={2} onClick={cancelOrder} colorScheme="teal">Cancel order</Button>
                                 <Button m={2} colorScheme="teal" type="submit">Submit</Button>
                             </form>
                         </Box>

@@ -1,10 +1,9 @@
 import { Context } from './myContext';
 import React from 'react'
 import { useEffect, useState } from "react";
-import { newOrders } from '../api';
 import { useQuery } from '@tanstack/react-query';
-import { fetchData } from '../api';
-
+import { fetchData, createData, patchData, deleteData } from '../api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 
 const Usercontext = ({ children }) => {
@@ -12,12 +11,39 @@ const Usercontext = ({ children }) => {
     const [name, setName] = useState("");
     const [pwd, setPwd] = useState("");
     const [dark, setdark] = useState(false)
+    const [Products, setProducts] = useState()
     const [formData, setformData] = useState()
     const [completedorderData, setcompletedorderData] = useState()
+    const queryClient = useQueryClient();
+
+    const createdata = useMutation({
+        mutationFn: createData,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['events']);
+        },
+    });
+
+    const patchdata = useMutation({
+        mutationFn: patchData,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['events']);
+        },
+    });
+
+    const deletedata = useMutation({
+        mutationFn: deleteData,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['events']);
+        },
+    });
 
     const themeChange = () => {
         dark ? localStorage.setItem('Theme', JSON.stringify(false)) : localStorage.setItem('Theme', JSON.stringify(true));
         setdark(prevtheme => !prevtheme)
+    }
+
+    const signUpClick = () => {
+        console.log("signed in via mutations")
     }
 
     const { data: events } = useQuery({
@@ -29,13 +55,12 @@ const Usercontext = ({ children }) => {
     useEffect(() => {
         if (events) {
             setformData(events.newOrders);
+            setProducts(events.Products.products)
             setcompletedorderData(events.completedOrders)
         }
     }, [events]);
 
     useEffect(() => {
-
-
         const item1 = localStorage.getItem('Name');
         const item2 = localStorage.getItem('Password');
         const item3 = localStorage.getItem('login');
@@ -55,9 +80,10 @@ const Usercontext = ({ children }) => {
     }, []);
     return (
         <Context.Provider value={{
-            name, setName, pwd,
+            name, setName, pwd, signUpClick, Products,
             setPwd, signIn, setsignIn, completedorderData
             , themeChange, dark, formData, setformData
+            , createdata, patchdata, deletedata
         }}>
             {children}
 

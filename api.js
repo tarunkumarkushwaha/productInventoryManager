@@ -28,13 +28,6 @@ export let newOrders = [
   }
 ];
 
-const DATA = localStorage.getItem('data');
-if (DATA) {
-  newOrders = JSON.parse(DATA);
-}
-
-// console.log(newOrders, "new orders")
-
 export const completedOrders = [
   {
     "customer_id": 11908,
@@ -62,7 +55,7 @@ export const completedOrders = [
   },
 ];
 
-const customerData = {
+const customerData = [{
   "id": 9,
   "customer": 11908,
   "customer_profile": {
@@ -80,7 +73,7 @@ const customerData = {
     "profile_pic": null,
     "gst": ""
   },
-}
+}]
 
 export const Products = {
   "id": 209,
@@ -107,6 +100,15 @@ export const Products = {
       "name": "rice"
     },
     {
+      "id": 249,
+      "selling_price": 12,
+      "total_price": 0,
+      "amount": 0,
+      "unit": "kg",
+      "quantity_in_inventory": 100,
+      "name": "potato"
+    },
+    {
       "id": 246,
       "selling_price": 23,
       "total_price": 0,
@@ -129,10 +131,60 @@ export const Products = {
   "adding_date": "2024-05-24T12:46:41.995828Z"
 }
 
+const DATA = localStorage.getItem('data');
+if (DATA) {
+  newOrders = JSON.parse(DATA);
+}
+
+const USERS = localStorage.getItem('users');
+if (USERS) {
+  customerData = JSON.parse(USERS);
+}
+
+const validatePassword = (inputs) => {
+  console.log("validate password logic",inputs)
+}
+
+const customerCreator = (inputs) => {
+  let stringId = Date.now().toString()
+  customerData.push(
+    {
+      "customer_id": stringId,
+      "customer_name": inputs.name,
+      "customer_password": inputs.password,
+      "customer_createddate": new Date(),
+    }
+  )
+    localStorage.setItem("users", JSON.stringify(customerData))
+}
+
+export const signUprequest = async (nameAndPassword) => {
+  return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(nameAndPassword);
+        customerCreator(nameAndPassword)
+      }, 500);
+  });
+};
+export const signInrequest = async (nameAndPassword) => {
+  return new Promise((resolve, reject) => {
+    if (validatePassword(nameAndPassword)) {
+      setTimeout(() => {
+        resolve({ signin: true });
+      }, 500);
+    }
+    else {
+      setTimeout(() => {
+        reject("user not found")
+      }, 500);
+    }
+  });
+};
+
 export const fetchData = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve({ completedOrders: completedOrders, newOrders: newOrders });
+      resolve({ completedOrders: completedOrders, newOrders: newOrders, Products: Products });
     }, 500);
   });
 };
@@ -153,7 +205,7 @@ export const patchData = async (newEvent) => {
       let currentorder = newEvent.currentData
       let modItems = newEvent.items
       currentorder.items = modItems
-      let newarray = [...newOrders.slice(0, newOrders.indexOf(newEvent.currentData)),currentorder ,...newOrders.slice(newOrders.indexOf(newEvent.currentData) + 1)];
+      let newarray = [...newOrders.slice(0, newOrders.indexOf(newEvent.currentData)), currentorder, ...newOrders.slice(newOrders.indexOf(newEvent.currentData) + 1)];
       newOrders = newarray
       resolve("item has been modified");
       localStorage.setItem("data", JSON.stringify(newOrders));

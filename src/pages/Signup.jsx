@@ -22,7 +22,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
-  const { setName, setPwd,dark } = useContext(Context);
+  const { signIn, setName, setPwd, dark } = useContext(Context);
 
   const toast = useToast()
 
@@ -72,7 +72,7 @@ const Signup = () => {
         title: 'Error',
         description: "name must be of 3 characters",
         status: 'error',
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
       })
       return
@@ -84,7 +84,7 @@ const Signup = () => {
         title: 'error',
         description: messege,
         status: 'error',
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
       })
       return
@@ -96,7 +96,7 @@ const Signup = () => {
         title: 'Success',
         description: "acount created",
         status: 'success',
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
       })
       localStorage.setItem('Name', JSON.stringify(naam));
@@ -107,7 +107,7 @@ const Signup = () => {
         title: 'Error',
         description: "password don't match",
         status: 'error',
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
       })
     }
@@ -115,7 +115,7 @@ const Signup = () => {
 
   return (
     <>
-      <Box minH="100vh" fontFamily={"cursive"} >
+      {signIn ? <Box minHeight={100}> you have already signed in</Box> : <Box minH="100vh" fontFamily={"cursive"} >
         <Flex bg="rgba(15, 23, 42, 0.6)" minH="100vh" justifyContent="center" alignItems="center">
           <VStack spacing={8} px={6} py={8} mx="auto" w="full" maxW="md">
             <Box bg={'white'} rounded="lg" shadow="md" p={8} w="full">
@@ -189,7 +189,7 @@ const Signup = () => {
             </Box>
           </VStack>
         </Flex>
-      </Box>
+      </Box>}
     </>
   )
 }

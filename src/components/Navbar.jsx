@@ -19,6 +19,11 @@ const Navbar = () => {
         Product inventory manager
       </Box>
       <Flex fontFamily={"cursive"}  justify='center' flexWrap={"wrap"} align='center' padding={"15px"} gap={3} color={dark ? "gray.100" : 'gray.900'} bg={dark ? "gray.900" : 'gray.400'}>
+      <Button colorScheme='white' bg={location.pathname == "/" ? "blue.300" : 'white'} color={"black"} variant='outline' onClick={() => {
+          navigate('/')
+        }}>
+          Home
+        </Button>
         {signIn ? <>
           <Button colorScheme='white' bg={location.pathname == "/activesalesorder" ? "blue.300" : 'white'} color={"black"} variant='outline' onClick={() => navigate("/activesalesorder")}>
             Active Sales Order

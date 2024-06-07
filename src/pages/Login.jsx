@@ -33,7 +33,7 @@ const Login = () => {
         title: 'Login suces',
         description: `User - ${userName} successfully logged in`,
         status: 'success',
-        duration: 9000,
+        duration: 2000,
         isClosable: true,
       })
       navigate("/activesalesorder")
@@ -43,7 +43,7 @@ const Login = () => {
         title: 'error',
         description: `User - ${userName} not found`,
         status: 'error',
-        duration: 9000,
+        duration: 2000,
         isClosable: true,
       })
     }
@@ -62,7 +62,7 @@ const Login = () => {
 
   return (
     <>
-      <Box  bgPosition="left" fontFamily={"cursive"} h="100vh">
+      {signIn ? <Box minHeight={100}> you have already signed in</Box> :<Box  bgPosition="left" fontFamily={"cursive"} h="100vh">
         <Flex bg="rgba(15, 23, 42, 0.6)" h="100vh" justifyContent="center" alignItems="center">
           <VStack spacing={8} px={6} py={8} mx="auto" w="full" maxW="md">
             <Box bg={'white'} rounded="lg" shadow="md" p={8} w="full">
@@ -115,7 +115,7 @@ const Login = () => {
             </Box>
           </VStack>
         </Flex>
-      </Box>
+      </Box>}
     </>
   )
 }
