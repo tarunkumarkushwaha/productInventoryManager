@@ -62,12 +62,14 @@ const SaleOrderModal = () => {
             return
         }
 
+        let stringId = Date.now().toString()
+
         const salesOrderPayload = {
             "customer_id": name,
             "items": items.map(item => item),
             "totalprice": items.reduce((total, product) => total + product.total_price, 0),
             "paid": false,
-            "invoice_no": "Invoice - 1212121",
+            "invoice_no": stringId,
             "invoice_date": new Date()
         }
         // console.log(salesOrderPayload)

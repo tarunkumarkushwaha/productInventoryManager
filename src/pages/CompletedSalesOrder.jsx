@@ -27,9 +27,9 @@ const CompletedSalesOrder = () => {
       <Box flex='1' d='flex' flexDirection='column' alignItems='center' justifyContent='center' m={10} textAlign='center'>
         <Grid templateRows='repeat(auto-fill, minmax(50px, 1fr))'>
           <Grid templateColumns='repeat(5, 1fr)' border='1px solid black' fontWeight={"bold"}>
-            <GridItem bg='red.300' p={4} border='1px solid black'>ID</GridItem>
+            <GridItem bg='red.300' p={4} border='1px solid black'>S no.</GridItem>
             <GridItem bg='green.300' p={4} border='1px solid black'>Customer Name</GridItem>
-            <GridItem bg='blue.300' p={4} border='1px solid black'>Price</GridItem>
+            <GridItem bg='blue.300' p={4} border='1px solid black'>Total Price</GridItem>
             <GridItem bg='yellow.300' p={4} border='1px solid black'>Last modified</GridItem>
             <GridItem bg='purple.300' p={4} border='1px solid black'>Edit/View</GridItem>
           </Grid>

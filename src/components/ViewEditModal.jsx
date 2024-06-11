@@ -77,6 +77,7 @@ const ViewEditModal = ({ currentData }) => {
     };
 
     const cancelOrder = () => {
+        // console.log("current data",currentData)
         deletedata.mutate(currentData)
         setproductName("")
         setQuantity("")
